@@ -677,7 +677,7 @@
 							Foreground="#FFFFFFFF"
 							VerticalAlignment="Center"
 							Margin="0,0,10,0"
-							Text="{Binding CurrentPosition, StringFormat=mm\:ss}" />
+							Text="{Binding CurrentPosition, StringFormat={}{0:mm\\:ss}}" />
                         <Slider
 							Name="ProgressSlider"
 							Grid.Column="1"
@@ -693,7 +693,7 @@
 							Foreground="#FFFFFFFF"
 							VerticalAlignment="Center"
 							Margin="10,0,0,0"
-							Text="{Binding TotalDuration, StringFormat=mm\:ss}" />
+							Text="{Binding TotalDuration, StringFormat={}{0:mm\\:ss}}" />
                     </Grid>
                     <Grid
 						Row="1">

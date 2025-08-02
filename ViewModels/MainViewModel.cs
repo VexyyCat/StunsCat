@@ -92,8 +92,18 @@ namespace StunsCat.ViewModels
         public bool IsPlaying => _audioPlayer?.IsPlaying ?? false;
         public bool IsPaused => _audioPlayer?.IsPaused ?? false;
         public bool HasSong => _audioPlayer?.HasSong ?? false;
-        public TimeSpan CurrentPosition => _audioPlayer?.CurrentPosition ?? TimeSpan.Zero;
-        public TimeSpan TotalDuration => _audioPlayer?.TotalDuration ?? TimeSpan.Zero;
+        public string CurrentPositionFormatted => CurrentPosition.ToString(@"mm\:ss");
+        public string TotalDurationFormatted => TotalDuration.ToString(@"mm\:ss");
+
+        public string CurrentPositionFormattedWithHours =>
+            CurrentPosition.TotalHours >= 1 ?
+            CurrentPosition.ToString(@"h\:mm\:ss") :
+            CurrentPosition.ToString(@"mm\:ss");
+
+        public string TotalDurationFormattedWithHours =>
+            TotalDuration.TotalHours >= 1 ?
+            TotalDuration.ToString(@"h\:mm\:ss") :
+            TotalDuration.ToString(@"mm\:ss");
 
         public float Volume
         {
@@ -130,6 +140,8 @@ namespace StunsCat.ViewModels
         public ICommand ToggleShuffleCommand { get; private set; }
         public ICommand ToggleLoopCommand { get; private set; }
         public ICommand LoadPlaylistCommand { get; private set; }
+        public TimeSpan CurrentPosition => _audioPlayer?.CurrentPosition ?? TimeSpan.Zero;
+        public TimeSpan TotalDuration => _audioPlayer?.TotalDuration ?? TimeSpan.Zero;
 
         #endregion
 
@@ -272,6 +284,12 @@ namespace StunsCat.ViewModels
                 OnPropertyChanged(nameof(CurrentPosition));
                 OnPropertyChanged(nameof(TotalDuration));
                 OnPropertyChanged(nameof(Volume));
+
+                // Añadir estas líneas para las propiedades formateadas
+                OnPropertyChanged(nameof(CurrentPositionFormatted));
+                OnPropertyChanged(nameof(TotalDurationFormatted));
+                OnPropertyChanged(nameof(CurrentPositionFormattedWithHours));
+                OnPropertyChanged(nameof(TotalDurationFormattedWithHours));
             });
         }
 
@@ -328,6 +346,8 @@ namespace StunsCat.ViewModels
             if (!_disposed && HasSong && IsPlaying)
             {
                 OnPropertyChanged(nameof(CurrentPosition));
+                OnPropertyChanged(nameof(CurrentPositionFormatted));
+                OnPropertyChanged(nameof(CurrentPositionFormattedWithHours));
             }
         }
 
