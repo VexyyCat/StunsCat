@@ -94,6 +94,9 @@ namespace StunsCat.ViewModels
         public bool HasSong => _audioPlayer?.HasSong ?? false;
         public string CurrentPositionFormatted => CurrentPosition.ToString(@"mm\:ss");
         public string TotalDurationFormatted => TotalDuration.ToString(@"mm\:ss");
+        private string _searchText;
+        private ObservableCollection<Song> _filteredPlaylist;
+        private ObservableCollection<Song> _originalPlaylist;
 
         public string CurrentPositionFormattedWithHours =>
             CurrentPosition.TotalHours >= 1 ?
@@ -118,6 +121,24 @@ namespace StunsCat.ViewModels
             }
         }
 
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (SetProperty(ref _searchText, value))
+                {
+                    FilterPlaylist();
+                }
+            }
+        }
+
+        public ObservableCollection<Song> FilteredPlaylist
+        {
+            get => _filteredPlaylist ?? _playlist;
+            set => SetProperty(ref _filteredPlaylist, value);
+        }
+
         public bool IsShuffleEnabled { get; private set; }
         public bool IsLoopEnabled { get; private set; }
 
@@ -140,8 +161,10 @@ namespace StunsCat.ViewModels
         public ICommand ToggleShuffleCommand { get; private set; }
         public ICommand ToggleLoopCommand { get; private set; }
         public ICommand LoadPlaylistCommand { get; private set; }
+        public ICommand ClearSearchCommand { get; private set; }
         public TimeSpan CurrentPosition => _audioPlayer?.CurrentPosition ?? TimeSpan.Zero;
         public TimeSpan TotalDuration => _audioPlayer?.TotalDuration ?? TimeSpan.Zero;
+
 
         #endregion
 
@@ -187,6 +210,7 @@ namespace StunsCat.ViewModels
             ToggleShuffleCommand = new RelayCommand(() => SafeExecute(() => ToggleShuffle()), () => !IsSongLoading);
             ToggleLoopCommand = new RelayCommand(() => SafeExecute(() => ToggleLoop()), () => !IsSongLoading);
             LoadPlaylistCommand = new RelayCommand<Playlist>(LoadPlaylist, (playlist) => playlist != null);
+            ClearSearchCommand = new RelayCommand(() => ClearSearch(), () => !string.IsNullOrEmpty(SearchText));
         }
 
         private void InitializeServices()
@@ -327,6 +351,43 @@ namespace StunsCat.ViewModels
             }
         }
 
+        private void FilterPlaylist()
+        {
+            if (_disposed || _playlist == null) return;
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(SearchText))
+                {
+                    // Si no hay texto de búsqueda, mostrar toda la playlist
+                    FilteredPlaylist = _playlist;
+                }
+                else
+                {
+                    // Filtrar por título, artista, álbum o género
+                    var filtered = _playlist.Where(song =>
+                        (song.Title?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                        (song.Artist?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                        (song.Album?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                        (song.Genre?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
+                    ).ToList();
+
+                    FilteredPlaylist = new ObservableCollection<Song>(filtered);
+                }
+
+                System.Diagnostics.Debug.WriteLine($"🔍 Búsqueda: '{SearchText}' - {FilteredPlaylist?.Count ?? 0} resultados");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error filtrando playlist: {ex.Message}");
+            }
+        }
+
+        private void ClearSearch()
+        {
+            SearchText = string.Empty;
+        }
+
         #endregion
 
         #region Animation Timers
@@ -383,6 +444,9 @@ namespace StunsCat.ViewModels
                                 Playlist.Add(song);
                             }
 
+                            FilteredPlaylist = _playlist;
+
+                            SearchText = string.Empty;
                             // Crear playlists automáticamente
                             _playlistManager.CreatePlaylistsFromSongs(songs);
 

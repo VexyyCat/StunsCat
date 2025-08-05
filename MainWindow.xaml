@@ -213,6 +213,117 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
+            <Style
+				TargetType="{x:Type TextBox}"
+				x:Key="SearchTextBox">
+                <Setter
+					Property="Background"
+					Value="#FF2A2A2A" />
+                <Setter
+					Property="Foreground"
+					Value="#FFFFFFFF" />
+                <Setter
+					Property="BorderThickness"
+					Value="1" />
+                <Setter
+					Property="BorderBrush"
+					Value="#FF444444" />
+                <Setter
+					Property="FontSize"
+					Value="12" />
+                <Setter
+					Property="Padding"
+					Value="8,6" />
+                <Setter
+					Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate
+							TargetType="{x:Type TextBox}">
+                            <Border
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								CornerRadius="6">
+                                <ScrollViewer
+									x:Name="PART_ContentHost"
+									Margin="{TemplateBinding Padding}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger
+									Property="UIElement.IsFocused"
+									Value="True">
+                                    <Setter
+										Property="BorderBrush"
+										Value="#FF00A8FF" />
+                                </Trigger>
+                                <Trigger
+									Property="UIElement.IsMouseOver"
+									Value="True">
+                                    <Setter
+										Property="BorderBrush"
+										Value="#FF555555" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style
+				TargetType="{x:Type Button}"
+				BasedOn="{StaticResource ModernButton}"
+				x:Key="ClearSearchButton">
+                <Setter
+					Property="Background"
+					Value="#FF444444" />
+                <Setter
+					Property="Width"
+					Value="24" />
+                <Setter
+					Property="Height"
+					Value="24" />
+                <Setter
+					Property="FontSize"
+					Value="10" />
+                <Setter
+					Property="Padding"
+					Value="0" />
+                <Setter
+					Property="Margin"
+					Value="0" />
+                <Setter
+					Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate
+							TargetType="{x:Type Button}">
+                            <Border
+								Background="{TemplateBinding Background}"
+								CornerRadius="12"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter
+									HorizontalAlignment="Center"
+									VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger
+									Property="UIElement.IsMouseOver"
+									Value="True">
+                                    <Setter
+										Property="Background"
+										Value="#FF666666" />
+                                </Trigger>
+                                <Trigger
+									Property="IsPressed"
+									Value="True">
+                                    <Setter
+										Property="Background"
+										Value="#FF222222" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <Storyboard
 				RepeatBehavior="Forever"
 				x:Key="VinylRotationStoryboard">
@@ -313,8 +424,12 @@
                             <RowDefinition
 								Height="Auto" />
                             <RowDefinition
+								Height="Auto" />
+                            <RowDefinition
 								Height="*" />
                         </Grid.RowDefinitions>
+                        
+                        <!-- Título -->
                         <TextBlock
 							Grid.Row="0"
 							Text="📁 Biblioteca Musical"
@@ -322,19 +437,87 @@
 							FontWeight="Bold"
 							Foreground="#FFFFFFFF"
 							Margin="20,20,20,10" />
+                        
+                        <!-- Botón Escanear -->
                         <Button
 							Grid.Row="1"
 							Content="Escanear Carpeta"
 							Style="{StaticResource ModernButton}"
 							Margin="20,0,20,10"
 							Command="{Binding ScanFolderCommand}" />
-                        <ListView
+                        
+                        <!-- Barra de Búsqueda -->
+                        <Grid
 							Grid.Row="2"
+							Margin="20,0,20,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+									Width="*" />
+                                <ColumnDefinition
+									Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox
+								Grid.Column="0"
+								Style="{StaticResource SearchTextBox}"
+								Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+								Height="42">
+                                <TextBox.InputBindings>
+                                    <KeyBinding
+										Key="Escape"
+										Command="{Binding ClearSearchCommand}" />
+                                </TextBox.InputBindings>
+                            </TextBox>
+                            <Button
+								Grid.Column="1"
+								Content="✕"
+								Style="{StaticResource ClearSearchButton}"
+								Margin="4,2,0,2"
+								Command="{Binding ClearSearchCommand}"
+								ToolTip="Limpiar búsqueda"
+								Visibility="{Binding ClearSearchCommand.CanExecute, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <TextBlock
+								Grid.Column="0"
+								Text="🔍 Buscar música..."
+								FontSize="11"
+								Foreground="#FF999999"
+								VerticalAlignment="Center"
+								Margin="12,0,0,0"
+								IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style
+										TargetType="{x:Type TextBlock}">
+                                        <Setter
+											Property="Visibility"
+											Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger
+												Binding="{Binding SearchText}"
+												Value="">
+                                                <Setter
+													Property="Visibility"
+													Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger
+												Binding="{Binding SearchText}"
+												Value="{x:Null}">
+                                                <Setter
+													Property="Visibility"
+													Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                        
+                        <!-- Lista de Canciones -->
+                        <ListView
+							Grid.Row="3"
 							Background="#00FFFFFF"
 							BorderThickness="0"
-							Margin="10,20,10,0"
+							Margin="8,8,8,12"
 							ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-							ItemsSource="{Binding Playlist}"
+							ItemsSource="{Binding FilteredPlaylist}"
 							SelectedItem="{Binding SelectedSong}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
