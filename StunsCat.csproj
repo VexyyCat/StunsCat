@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\Icons\logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +15,17 @@
     <None Remove="Assets\Gifs\medium_bg.gif" />
     <None Remove="Assets\Gifs\normal_bg.gif" />
     <None Remove="Assets\Gifs\slow_bg.gif" />
+    <None Remove="Assets\Icons\folder.ico" />
+    <None Remove="Assets\Icons\icon.ico" />
+    <None Remove="Assets\Icons\info.ico" />
+    <None Remove="Assets\Icons\list.ico" />
+    <None Remove="Assets\Icons\loop.ico" />
+    <None Remove="Assets\Icons\next.ico" />
+    <None Remove="Assets\Icons\pause.ico" />
+    <None Remove="Assets\Icons\play.ico" />
+    <None Remove="Assets\Icons\previous.ico" />
+    <None Remove="Assets\Icons\shuffle.ico" />
+    <None Remove="Assets\Icons\volume.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +43,42 @@
     </Content>
     <Content Include="Assets\Gifs\slow_bg.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\folder.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\info.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\list.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\logo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\loop.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\next.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\pause.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\play.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\previous.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\shuffle.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\volume.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

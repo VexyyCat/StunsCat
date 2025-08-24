@@ -35,12 +35,9 @@ namespace StunsCat
                 SetupAnimations();
                 InitializeUIUpdateTimer();
                 LoadInitialConfiguration();
-
-                System.Diagnostics.Debug.WriteLine("✅ MainWindow inicializada correctamente");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error inicializando MainWindow: {ex.Message}");
                 MessageBox.Show($"Error inicializando la aplicación: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -54,11 +51,9 @@ namespace StunsCat
             {
                 _viewModel = new MainViewModel();
                 DataContext = _viewModel;
-                System.Diagnostics.Debug.WriteLine("✅ ViewModel inicializado y asignado");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error inicializando ViewModel: {ex.Message}");
                 throw;
             }
         }
@@ -85,12 +80,9 @@ namespace StunsCat
                 // Eventos de ventana
                 StateChanged += MainWindow_StateChanged;
                 SizeChanged += MainWindow_SizeChanged;
-
-                System.Diagnostics.Debug.WriteLine("✅ Eventos configurados");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error configurando eventos: {ex.Message}");
             }
         }
 
@@ -106,12 +98,9 @@ namespace StunsCat
 
                 // Centrar la ventana inicialmente
                 CenterWindow();
-
-                System.Diagnostics.Debug.WriteLine("✅ Estado de ventana inicializado");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error inicializando estado de ventana: {ex.Message}");
             }
         }
 
@@ -124,16 +113,13 @@ namespace StunsCat
 
                 if (_vinylRotationStoryboard != null)
                 {
-                    System.Diagnostics.Debug.WriteLine("✅ Animación del vinilo configurada");
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("⚠️ No se encontró la animación del vinilo en los recursos");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error configurando animaciones: {ex.Message}");
             }
         }
 
@@ -148,12 +134,9 @@ namespace StunsCat
                 };
                 _uiUpdateTimer.Tick += UIUpdateTimer_Tick;
                 _uiUpdateTimer.Start();
-
-                System.Diagnostics.Debug.WriteLine("✅ Timer de actualización de UI inicializado");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error inicializando timer de UI: {ex.Message}");
             }
         }
 
@@ -163,11 +146,9 @@ namespace StunsCat
             {
                 // Cargar configuración guardada si existe
                 _viewModel?.LoadConfiguration();
-                System.Diagnostics.Debug.WriteLine("✅ Configuración inicial cargada");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error cargando configuración inicial: {ex.Message}");
             }
         }
 
@@ -187,7 +168,6 @@ namespace StunsCat
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en timer de actualización de UI: {ex.Message}");
             }
         }
 
@@ -212,7 +192,6 @@ namespace StunsCat
                 switch (e.PropertyName)
                 {
                     case nameof(MainViewModel.CurrentBackgroundGif):
-                        System.Diagnostics.Debug.WriteLine("🎯 Se detectó cambio en CurrentBackgroundGif");
                         UpdateBackgroundGif();
                         break;
 
@@ -235,7 +214,6 @@ namespace StunsCat
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error manejando PropertyChanged: {ex.Message}");
             }
         }
 
@@ -249,7 +227,6 @@ namespace StunsCat
             {
                 if (!string.IsNullOrEmpty(_viewModel.CurrentBackgroundGif))
                 {
-                    System.Diagnostics.Debug.WriteLine($"🎭 Asignando GIF a Image: {_viewModel.CurrentBackgroundGif}");
 
                     var gifImage = new BitmapImage();
                     gifImage.BeginInit();
@@ -262,7 +239,6 @@ namespace StunsCat
                     if (BackgroundGif != null)
                     {
                         BackgroundGif.Source = gifImage;
-                        System.Diagnostics.Debug.WriteLine($"🎬 GIF cargado correctamente");
                     }
                 }
                 else
@@ -271,14 +247,11 @@ namespace StunsCat
                     if (BackgroundGif != null)
                     {
                         BackgroundGif.Source = null;
-                        System.Diagnostics.Debug.WriteLine("🧹 GIF de fondo limpiado");
                     }
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error loading background GIF: {ex.Message}");
-
                 // Fallback: limpiar la imagen si hay error
                 if (BackgroundGif != null)
                 {
@@ -298,7 +271,6 @@ namespace StunsCat
                         if (_vinylRotationStoryboard.GetCurrentState() != ClockState.Active)
                         {
                             _vinylRotationStoryboard.Begin();
-                            System.Diagnostics.Debug.WriteLine("🎵 Animación del vinilo iniciada");
                         }
                     }
                     else
@@ -306,14 +278,12 @@ namespace StunsCat
                         if (_vinylRotationStoryboard.GetCurrentState() == ClockState.Active)
                         {
                             _vinylRotationStoryboard.Pause();
-                            System.Diagnostics.Debug.WriteLine("⏸️ Animación del vinilo pausada");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error actualizando animación del vinilo: {ex.Message}");
             }
         }
 
@@ -323,17 +293,16 @@ namespace StunsCat
             {
                 if (_viewModel.CurrentSong != null)
                 {
-                    Title = $"StunsCat Music Player - {_viewModel.CurrentSong.Artist} - {_viewModel.CurrentSong.Title}";
+                    Title = $"StunsCat - {_viewModel.CurrentSong.Artist} - {_viewModel.CurrentSong.Title}";
                 }
                 else
                 {
-                    Title = "StunsCat Music Player";
+                    Title = "StunsCat";
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error actualizando título de ventana: {ex.Message}");
-                Title = "StunsCat Music Player";
+                Title = "StunsCat";
             }
         }
 
@@ -345,17 +314,14 @@ namespace StunsCat
                 if (_viewModel.IsSongLoading)
                 {
                     Cursor = Cursors.Wait;
-                    System.Diagnostics.Debug.WriteLine("⏳ Estado de carga: Cargando...");
                 }
                 else
                 {
                     Cursor = Cursors.Arrow;
-                    System.Diagnostics.Debug.WriteLine("✅ Estado de carga: Completado");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error actualizando estado de carga: {ex.Message}");
                 Cursor = Cursors.Arrow; // Fallback
             }
         }
@@ -366,16 +332,13 @@ namespace StunsCat
             {
                 if (_viewModel.IsScanning)
                 {
-                    System.Diagnostics.Debug.WriteLine("🔍 Iniciando escaneo...");
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("✅ Escaneo completado");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error actualizando estado de escaneo: {ex.Message}");
             }
         }
 
@@ -393,11 +356,10 @@ namespace StunsCat
                 }
                 catch (InvalidOperationException)
                 {
-                    // Ignorar si la ventana no se puede mover (ej: maximizada)
+                    // Ignorar si la ventana no se puede mover
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Error moviendo ventana: {ex.Message}");
                 }
             }
         }
@@ -417,7 +379,6 @@ namespace StunsCat
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en StateChanged: {ex.Message}");
             }
         }
 
@@ -433,7 +394,6 @@ namespace StunsCat
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en SizeChanged: {ex.Message}");
             }
         }
 
@@ -519,7 +479,6 @@ namespace StunsCat
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error manejando tecla: {ex.Message}");
             }
         }
 
@@ -530,19 +489,15 @@ namespace StunsCat
 
             try
             {
-                System.Diagnostics.Debug.WriteLine("🔄 Iniciando cierre de aplicación...");
 
                 // Guardar configuración antes de cerrar
                 _viewModel?.SaveConfiguration();
 
                 // Limpiar recursos
                 CleanupResources();
-
-                System.Diagnostics.Debug.WriteLine("✅ Aplicación cerrada correctamente");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error durante el cierre: {ex.Message}");
                 // No cancelar el cierre por errores de limpieza
             }
         }
@@ -578,7 +533,6 @@ namespace StunsCat
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error maximizando/restaurando ventana: {ex.Message}");
             }
         }
 
@@ -593,12 +547,9 @@ namespace StunsCat
                 Left = _previousLeft;
                 Top = _previousTop;
                 _isMaximized = false;
-
-                System.Diagnostics.Debug.WriteLine("🔄 Ventana restaurada");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error restaurando ventana: {ex.Message}");
             }
         }
 
@@ -618,12 +569,9 @@ namespace StunsCat
                 // Maximizar ventana
                 WindowState = WindowState.Maximized;
                 _isMaximized = true;
-
-                System.Diagnostics.Debug.WriteLine("🔄 Ventana maximizada");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error maximizando ventana: {ex.Message}");
             }
         }
 
@@ -638,7 +586,6 @@ namespace StunsCat
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error actualizando botón maximizar: {ex.Message}");
             }
         }
 
@@ -651,7 +598,6 @@ namespace StunsCat
             if (_viewModel?.HasSong == true && !_viewModel.IsSongLoading)
             {
                 _isUserDragging = true;
-                System.Diagnostics.Debug.WriteLine("🎯 Usuario comenzó a arrastrar el slider");
             }
         }
 
@@ -663,18 +609,15 @@ namespace StunsCat
             try
             {
                 _isUserDragging = false;
-                System.Diagnostics.Debug.WriteLine("🎯 Usuario terminó de arrastrar el slider");
 
                 if (sender is Slider slider && _viewModel?.HasSong == true && !_viewModel.IsSongLoading)
                 {
                     var newPosition = TimeSpan.FromSeconds(slider.Value);
                     _viewModel.SeekToPosition(newPosition);
-                    System.Diagnostics.Debug.WriteLine($"🎵 Buscando posición: {newPosition:mm\\:ss}");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error buscando posición: {ex.Message}");
             }
             finally
             {
@@ -688,7 +631,6 @@ namespace StunsCat
             if (_isUserDragging && sender is Slider)
             {
                 var newPosition = TimeSpan.FromSeconds(e.NewValue);
-                System.Diagnostics.Debug.WriteLine($"🎵 Preview posición: {newPosition:mm\\:ss}");
             }
         }
 
@@ -701,7 +643,6 @@ namespace StunsCat
             // Manejar cambios en la barra de progreso del escaneo
             if (sender is ProgressBar progressBar)
             {
-                System.Diagnostics.Debug.WriteLine($"📊 Progreso de escaneo: {progressBar.Value:F1}%");
             }
         }
 
@@ -721,12 +662,9 @@ namespace StunsCat
 
                 Left = (screenWidth - Width) / 2;
                 Top = (screenHeight - Height) / 2;
-
-                System.Diagnostics.Debug.WriteLine("📐 Ventana centrada");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error centrando ventana: {ex.Message}");
             }
         }
 
@@ -739,11 +677,9 @@ namespace StunsCat
             try
             {
                 _viewModel?.ApplyTheme(themeName);
-                System.Diagnostics.Debug.WriteLine($"🎨 Tema aplicado: {themeName}");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error aplicando tema: {ex.Message}");
             }
         }
 
@@ -789,12 +725,9 @@ namespace StunsCat
                 Closing -= MainWindow_Closing;
                 StateChanged -= MainWindow_StateChanged;
                 SizeChanged -= MainWindow_SizeChanged;
-
-                System.Diagnostics.Debug.WriteLine("🧹 Recursos de MainWindow limpiados");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error limpiando recursos: {ex.Message}");
             }
         }
 
@@ -809,7 +742,6 @@ namespace StunsCat
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error durante OnClosing: {ex.Message}");
                 // No cancelar el cierre por errores de limpieza
             }
             finally

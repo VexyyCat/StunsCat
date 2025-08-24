@@ -187,7 +187,6 @@ namespace StunsCat.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error inicializando MainViewModel: {ex.Message}");
                 throw;
             }
         }
@@ -277,7 +276,6 @@ namespace StunsCat.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error ejecutando acción: {ex.Message}");
             }
         }
 
@@ -285,14 +283,12 @@ namespace StunsCat.ViewModels
         {
             IsShuffleEnabled = !IsShuffleEnabled;
             OnPropertyChanged(nameof(IsShuffleEnabled));
-            System.Diagnostics.Debug.WriteLine($"🔀 Shuffle: {(IsShuffleEnabled ? "Activado" : "Desactivado")}");
         }
 
         private void ToggleLoop()
         {
             IsLoopEnabled = !IsLoopEnabled;
             OnPropertyChanged(nameof(IsLoopEnabled));
-            System.Diagnostics.Debug.WriteLine($"🔁 Loop: {(IsLoopEnabled ? "Activado" : "Desactivado")}");
         }
 
         private void RefreshPlayerProperties()
@@ -327,7 +323,6 @@ namespace StunsCat.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error buscando posición: {ex.Message}");
             }
         }
 
@@ -343,11 +338,9 @@ namespace StunsCat.ViewModels
                     Playlist.Add(song);
                 }
 
-                System.Diagnostics.Debug.WriteLine($"✅ Cargada playlist: {playlist.Name} con {playlist.Songs.Count} canciones");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error cargando playlist: {ex.Message}");
             }
         }
 
@@ -374,12 +367,9 @@ namespace StunsCat.ViewModels
 
                     FilteredPlaylist = new ObservableCollection<Song>(filtered);
                 }
-
-                System.Diagnostics.Debug.WriteLine($"🔍 Búsqueda: '{SearchText}' - {FilteredPlaylist?.Count ?? 0} resultados");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error filtrando playlist: {ex.Message}");
             }
         }
 
@@ -451,14 +441,12 @@ namespace StunsCat.ViewModels
                             _playlistManager.CreatePlaylistsFromSongs(songs);
 
                             ScanStatus = $"Escaneo completado. {songs.Count} canciones encontradas.";
-                            System.Diagnostics.Debug.WriteLine($"✅ Escaneo completado: {songs.Count} canciones, {_playlistManager.Playlists.Count} playlists");
                         });
                     }
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error durante el escaneo: {ex.Message}");
                 ScanStatus = $"Error durante el escaneo: {ex.Message}";
             }
             finally
@@ -474,7 +462,6 @@ namespace StunsCat.ViewModels
             try
             {
                 IsSongLoading = true;
-                System.Diagnostics.Debug.WriteLine($"🎵 Cargando canción: {song.Title}");
 
                 // Parar reproducción actual si existe
                 if (IsPlaying)
@@ -494,16 +481,13 @@ namespace StunsCat.ViewModels
                     // Iniciar reproducción
                     _audioPlayer?.Play();
 
-                    System.Diagnostics.Debug.WriteLine($"✅ Canción cargada exitosamente: {song.Title}");
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Error cargando canción: {song.Title}");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error reproduciendo canción: {ex.Message}");
             }
             finally
             {
@@ -527,7 +511,6 @@ namespace StunsCat.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error reproduciendo siguiente canción: {ex.Message}");
             }
         }
 
@@ -547,7 +530,6 @@ namespace StunsCat.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error reproduciendo canción anterior: {ex.Message}");
             }
         }
 
@@ -563,31 +545,23 @@ namespace StunsCat.ViewModels
             {
                 var gifPath = GetBackgroundGifByBPM(song.BPM);
 
-                System.Diagnostics.Debug.WriteLine($"🎭 Actualizando GIF de fondo para: {song.Title}");
-                System.Diagnostics.Debug.WriteLine($"🎵 BPM: {song.BPM}");
-                System.Diagnostics.Debug.WriteLine($"📁 GIF path: {gifPath}");
-
                 if (File.Exists(gifPath))
                 {
                     CurrentBackgroundGif = gifPath;
-                    System.Diagnostics.Debug.WriteLine($"✅ GIF encontrado: {CurrentBackgroundGif}");
                 }
                 else
                 {
                     var defaultPath = Path.GetFullPath("Assets/Gifs/default_bg.gif");
-                    System.Diagnostics.Debug.WriteLine($"⚠️ GIF no encontrado, usando default: {defaultPath}");
 
                     CurrentBackgroundGif = File.Exists(defaultPath) ? defaultPath : null;
 
                     if (CurrentBackgroundGif == null)
                     {
-                        System.Diagnostics.Debug.WriteLine("❌ GIF por defecto tampoco existe");
                     }
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error actualizando GIF de fondo: {ex.Message}");
                 CurrentBackgroundGif = null;
             }
         }
@@ -618,7 +592,6 @@ namespace StunsCat.ViewModels
             {
                 UpdateBackgroundGif(song);
                 RefreshPlayerProperties();
-                System.Diagnostics.Debug.WriteLine($"🎵 Canción cambiada: {song?.Title ?? "Ninguna"}");
             });
         }
 
@@ -632,7 +605,6 @@ namespace StunsCat.ViewModels
                 _vinylRotationTimer?.Start();
                 _positionTimer?.Start();
                 RefreshPlayerProperties();
-                System.Diagnostics.Debug.WriteLine("▶️ Reproducción iniciada");
             });
         }
 
@@ -646,7 +618,6 @@ namespace StunsCat.ViewModels
                 _vinylRotationTimer?.Stop();
                 _positionTimer?.Stop();
                 RefreshPlayerProperties();
-                System.Diagnostics.Debug.WriteLine("⏸️ Reproducción pausada");
             });
         }
 
@@ -661,7 +632,6 @@ namespace StunsCat.ViewModels
                 _positionTimer?.Stop();
                 VinylRotationAngle = 0;
                 RefreshPlayerProperties();
-                System.Diagnostics.Debug.WriteLine("⏹️ Reproducción detenida");
             });
         }
 
@@ -724,7 +694,6 @@ namespace StunsCat.ViewModels
                 string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
                 if (!File.Exists(configPath))
                 {
-                    System.Diagnostics.Debug.WriteLine("⚠️ Archivo de configuración no encontrado.");
                     return;
                 }
 
@@ -747,7 +716,6 @@ namespace StunsCat.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error cargando configuración: {ex.Message}");
             }
         }
 
@@ -770,11 +738,9 @@ namespace StunsCat.ViewModels
 
                 string json = System.Text.Json.JsonSerializer.Serialize(config, options);
                 File.WriteAllText(configPath, json);
-                System.Diagnostics.Debug.WriteLine("💾 Configuración guardada correctamente.");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error guardando configuración: {ex.Message}");
             }
         }
 
@@ -789,7 +755,6 @@ namespace StunsCat.ViewModels
                 string themePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Themes", $"{themeName}.xaml");
                 if (!File.Exists(themePath))
                 {
-                    System.Diagnostics.Debug.WriteLine($"⚠️ Tema no encontrado: {themePath}");
                     return;
                 }
 
@@ -816,11 +781,9 @@ namespace StunsCat.ViewModels
 
                 // Agregar el nuevo tema
                 app.Resources.MergedDictionaries.Add(themeDict);
-                System.Diagnostics.Debug.WriteLine($"🎨 Tema aplicado: {themeName}");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error aplicando tema: {ex.Message}");
             }
         }
 
@@ -899,7 +862,6 @@ namespace StunsCat.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine($"❌ Error durante Dispose: {ex.Message}");
                     }
                 }
 
@@ -962,7 +924,6 @@ namespace StunsCat.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en CanExecute: {ex.Message}");
                 return false;
             }
         }
@@ -978,7 +939,6 @@ namespace StunsCat.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error ejecutando comando: {ex.Message}");
             }
         }
     }
@@ -1008,7 +968,6 @@ namespace StunsCat.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en CanExecute<T>: {ex.Message}");
                 return false;
             }
         }
@@ -1024,10 +983,8 @@ namespace StunsCat.ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error ejecutando comando<T>: {ex.Message}");
             }
         }
     }
-
     #endregion
 }

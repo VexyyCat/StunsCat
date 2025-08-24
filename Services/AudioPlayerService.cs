@@ -67,7 +67,6 @@ namespace StunsCat.Services
                         }
                         catch (Exception ex)
                         {
-                            System.Diagnostics.Debug.WriteLine($"❌ Error setting volume: {ex.Message}");
                         }
                     }
                 }
@@ -113,12 +112,10 @@ namespace StunsCat.Services
             try
             {
                 _isLoading = true;
-                System.Diagnostics.Debug.WriteLine($"🎵 Cargando canción: {song.Title}");
 
                 // Verificar que el archivo existe
                 if (!File.Exists(song.FilePath))
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Archivo no encontrado: {song.FilePath}");
                     return false;
                 }
 
@@ -144,7 +141,6 @@ namespace StunsCat.Services
                             // Verificar que el archivo se pudo leer correctamente
                             if (_audioFileReader.TotalTime == TimeSpan.Zero)
                             {
-                                System.Diagnostics.Debug.WriteLine($"❌ Archivo de audio inválido o corrupto: {song.FilePath}");
                                 _audioFileReader?.Dispose();
                                 _audioFileReader = null;
                                 return false;
@@ -166,14 +162,10 @@ namespace StunsCat.Services
 
                             // Disparar evento de cambio de canción
                             OnSongChanged(song);
-
-                            System.Diagnostics.Debug.WriteLine($"✅ Canción cargada: {song.Title} - Duración: {TotalDuration}");
                             return true;
                         }
                         catch (Exception ex)
                         {
-                            System.Diagnostics.Debug.WriteLine($"❌ Error cargando canción {song.Title}: {ex.Message}");
-
                             // Limpiar en caso de error
                             DisposeCurrentResources();
                             CurrentSong = null;
@@ -187,7 +179,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error general cargando canción: {ex.Message}");
                 return false;
             }
             finally
@@ -221,14 +212,10 @@ namespace StunsCat.Services
 
                     StartPositionTimer();
                     OnPlaybackStarted();
-
-                    System.Diagnostics.Debug.WriteLine($"▶️ Reproduciendo: {CurrentSong?.Title}");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error al reproducir: {ex.Message}");
-
                 // En caso de error, resetear el estado
                 IsPlaying = false;
                 IsPaused = false;
@@ -265,13 +252,10 @@ namespace StunsCat.Services
 
                     StopPositionTimer();
                     OnPlaybackPaused();
-
-                    System.Diagnostics.Debug.WriteLine($"⏸️ Pausado: {CurrentSong?.Title}");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error al pausar: {ex.Message}");
             }
         }
 
@@ -314,13 +298,10 @@ namespace StunsCat.Services
 
                     _audioFileReader.CurrentTime = TimeSpan.FromSeconds(newSeconds);
                     CurrentPosition = TimeSpan.FromSeconds(newSeconds);
-
-                    System.Diagnostics.Debug.WriteLine($"⏭️ Posición cambiada a: {CurrentPosition}");
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error cambiando posición: {ex.Message}");
             }
         }
 
@@ -336,7 +317,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error cambiando posición por porcentaje: {ex.Message}");
             }
         }
         #endregion
@@ -352,7 +332,6 @@ namespace StunsCat.Services
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Error deteniendo reproductor: {ex.Message}");
                 }
             }
 
@@ -378,12 +357,9 @@ namespace StunsCat.Services
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Error reiniciando posición: {ex.Message}");
                 }
             }
-
             OnPlaybackStopped();
-            System.Diagnostics.Debug.WriteLine($"⏹️ Detenido: {CurrentSong?.Title}");
         }
 
         private void StartPositionTimer()
@@ -400,7 +376,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error iniciando timer de posición: {ex.Message}");
             }
         }
 
@@ -414,7 +389,6 @@ namespace StunsCat.Services
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Error deteniendo timer de posición: {ex.Message}");
                 }
             }
         }
@@ -431,7 +405,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error actualizando posición: {ex.Message}");
             }
         }
 
@@ -453,12 +426,9 @@ namespace StunsCat.Services
                     _audioFileReader.Dispose();
                     _audioFileReader = null;
                 }
-
-                System.Diagnostics.Debug.WriteLine("🧹 Recursos de audio liberados");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error liberando recursos: {ex.Message}");
             }
         }
         #endregion
@@ -513,19 +483,16 @@ namespace StunsCat.Services
 
                     if (reachedEnd)
                     {
-                        System.Diagnostics.Debug.WriteLine($"🔚 Canción terminada: {CurrentSong?.Title}");
                         OnSongEnded();
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine($"⏹️ Reproducción detenida: {CurrentSong?.Title}");
                         OnPlaybackStopped();
                     }
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en PlaybackStopped: {ex.Message}");
             }
         }
         #endregion
@@ -539,7 +506,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en evento SongChanged: {ex.Message}");
             }
         }
 
@@ -551,7 +517,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en evento PlaybackStarted: {ex.Message}");
             }
         }
 
@@ -563,7 +528,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en evento PlaybackPaused: {ex.Message}");
             }
         }
 
@@ -575,7 +539,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en evento PlaybackStopped: {ex.Message}");
             }
         }
 
@@ -587,7 +550,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en evento PositionChanged: {ex.Message}");
             }
         }
 
@@ -599,7 +561,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en evento SongEnded: {ex.Message}");
             }
         }
         #endregion
@@ -619,8 +580,6 @@ namespace StunsCat.Services
 
                 try
                 {
-                    System.Diagnostics.Debug.WriteLine("🗑️ Disposing AudioPlayerService...");
-
                     // Detener todo
                     StopInternal();
 
@@ -637,12 +596,9 @@ namespace StunsCat.Services
 
                     // Limpiar canción actual
                     CurrentSong = null;
-
-                    System.Diagnostics.Debug.WriteLine("✅ AudioPlayerService disposed");
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Error durante Dispose: {ex.Message}");
                 }
             }
 

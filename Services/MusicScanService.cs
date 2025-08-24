@@ -64,7 +64,6 @@ namespace StunsCat.Services
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine($"❌ Error procesando {Path.GetFileName(filePath)}: {ex.Message}");
                         OnScanStatusChanged($"Error procesando {Path.GetFileName(filePath)}: {ex.Message}");
                     }
 
@@ -81,14 +80,12 @@ namespace StunsCat.Services
             catch (UnauthorizedAccessException ex)
             {
                 var errorMsg = $"Sin permisos para acceder a la carpeta: {ex.Message}";
-                System.Diagnostics.Debug.WriteLine($"❌ {errorMsg}");
                 OnScanStatusChanged(errorMsg);
                 throw;
             }
             catch (Exception ex)
             {
                 var errorMsg = $"Error durante el escaneo: {ex.Message}";
-                System.Diagnostics.Debug.WriteLine($"❌ {errorMsg}");
                 OnScanStatusChanged(errorMsg);
                 throw;
             }
@@ -106,7 +103,6 @@ namespace StunsCat.Services
                 {
                     if (!System.IO.File.Exists(filePath)) // Specify System.IO.File to resolve ambiguity
                     {
-                        System.Diagnostics.Debug.WriteLine($"⚠️ Archivo no encontrado: {filePath}");
                         return null;
                     }
 
@@ -143,28 +139,22 @@ namespace StunsCat.Services
 
                     // Extraer carátula del álbum
                     song.AlbumArt = ExtractAlbumArt(tag);
-
-                    System.Diagnostics.Debug.WriteLine($"✅ Procesado: {song.Title} - {song.Artist}");
                     return song;
                 }
                 catch (TagLib.CorruptFileException ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"⚠️ Archivo corrupto: {Path.GetFileName(filePath)} - {ex.Message}");
                     return null;
                 }
                 catch (TagLib.UnsupportedFormatException ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"⚠️ Formato no soportado: {Path.GetFileName(filePath)} - {ex.Message}");
                     return null;
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"⚠️ Sin permisos: {Path.GetFileName(filePath)} - {ex.Message}");
                     return null;
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"❌ Error procesando {Path.GetFileName(filePath)}: {ex.Message}");
                     return null;
                 }
             });
@@ -207,7 +197,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"⚠️ Error extrayendo BPM: {ex.Message}");
                 return EstimateBPMByGenre(tag?.FirstGenre);
             }
         }
@@ -268,7 +257,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"⚠️ Error extrayendo carátula: {ex.Message}");
             }
 
             return null;
@@ -286,7 +274,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"⚠️ Error verificando archivo: {ex.Message}");
                 return false;
             }
         }
@@ -306,7 +293,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en evento ScanProgress: {ex.Message}");
             }
         }
 
@@ -320,7 +306,6 @@ namespace StunsCat.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Error en evento ScanStatusChanged: {ex.Message}");
             }
         }
 

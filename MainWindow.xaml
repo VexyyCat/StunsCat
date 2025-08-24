@@ -369,13 +369,12 @@
                     <ColumnDefinition
 						Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock
-					Grid.Column="0"
-					Text="🎧 StunsCat Music Player"
-					FontSize="18"
-					FontWeight="Bold"
-					Foreground="#FFFFFFFF"
-					VerticalAlignment="Center" />
+                <TextBlock Grid.Row="0" FontSize="18" FontWeight="Bold" Foreground="#FFFFFFFF" Margin="10,10,10,10">
+						<InlineUIContainer>
+							<Image Source="Assets/Icons/icon.ico" Width="16" Height="16" Margin="0,0,5,0"/>
+						</InlineUIContainer>
+						StunsCat
+                </TextBlock>
                 <StackPanel
 					Grid.Column="1"
 					Orientation="Horizontal">
@@ -430,14 +429,13 @@
                         </Grid.RowDefinitions>
                         
                         <!-- Título -->
-                        <TextBlock
-							Grid.Row="0"
-							Text="📁 Biblioteca Musical"
-							FontSize="16"
-							FontWeight="Bold"
-							Foreground="#FFFFFFFF"
-							Margin="20,20,20,10" />
-                        
+                        <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Foreground="#FFFFFFFF" Margin="20,20,20,10">
+							<InlineUIContainer>
+								<Image Source="Assets/Icons/folder.ico" Width="16" Height="16" Margin="0,0,5,0"/>
+							</InlineUIContainer>
+							Biblioteca Musical
+                        </TextBlock>
+
                         <!-- Botón Escanear -->
                         <Button
 							Grid.Row="1"
@@ -633,13 +631,12 @@
                                 <RowDefinition
 									Height="39*" />
                             </Grid.RowDefinitions>
-                            <TextBlock
-								Grid.Row="0"
-								Text="🎵 Listas de Reproducción"
-								FontSize="16"
-								FontWeight="Bold"
-								Foreground="#FFFFFFFF"
-								Margin="20,20,20,10" />
+                            <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Foreground="#FFFFFFFF" Margin="20,20,20,10">
+								<InlineUIContainer>
+									<Image Source="Assets/Icons/list.ico" Width="16" Height="16" Margin="0,0,0,0"/>
+								</InlineUIContainer>
+								Listas de Reproducción
+                            </TextBlock>
                             <Grid
 								Margin="20,51,20,10"
 								RowSpan="2">
@@ -776,12 +773,12 @@
 						Margin="0,275,0,0">
                         <StackPanel
 							Margin="15,15,15,0">
-                            <TextBlock
-								Text="🎵 Información"
-								FontSize="16"
-								FontWeight="Bold"
-								Foreground="#FFFFFFFF"
-								Margin="0,0,0,20" />
+                            <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Foreground="#FFFFFFFF" Margin="10,10,10,10">
+							<InlineUIContainer>
+								<Image Source="Assets/Icons/info.ico" Width="16" Height="16" Margin="0,0,0,0"/>
+							</InlineUIContainer>
+							Información
+						</TextBlock>
                             <TextBlock
 								Text="Álbum:"
 								Foreground="#CCCCCC"
@@ -892,12 +889,11 @@
 							Grid.Column="0"
 							Orientation="Horizontal"
 							HorizontalAlignment="Left">
-                            <TextBlock
-								Text="🔊"
-								Foreground="#FFFFFFFF"
-								FontSize="16"
-								VerticalAlignment="Center"
-								Margin="0,0,10,0" />
+                            <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Foreground="#FFFFFFFF" Margin="20,20,20,10">
+								<InlineUIContainer>
+									<Image Source="Assets/Icons/volume.ico" Width="16" Height="16" Margin="0,0,10,0"/>
+								</InlineUIContainer>
+                            </TextBlock>
                             <Slider
 								Width="100"
 								Style="{StaticResource ModernSlider}"
@@ -910,46 +906,58 @@
 							Grid.Column="1"
 							Orientation="Horizontal"
 							HorizontalAlignment="Center">
-                            <Button
-								Content="⏮"
-								Style="{StaticResource ModernButton}"
+
+                            <Button Style="{StaticResource ModernButton}"
 								Width="40"
 								Height="40"
-								FontSize="16"
-								Command="{Binding PreviousSongCommand}" />
-                            <Button
-								Style="{StaticResource PlayButton}"
-								Margin="10,0"
-								Content="{Binding IsPlaying, Converter={StaticResource PlayPauseConverter}}"
-								Command="{Binding TogglePlayPauseCommand}" />
-                            <Button
-								Content="⏭"
-								Style="{StaticResource ModernButton}"
-								Width="40"
-								Height="40"
-								FontSize="16"
-								Command="{Binding NextSongCommand}" />
+								Command="{Binding PreviousSongCommand}">
+                                <Image Source="Assets/Icons/previous.ico" Width="16" Height="16"/>
+                            </Button>
+
+
+                            <Button Style="{StaticResource PlayButton}"
+									Margin="10,0"
+									Command="{Binding TogglePlayPauseCommand}">
+                                <Image Width="16" Height="16">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="Assets/Icons/play.ico"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                                    <Setter Property="Source" Value="Assets/Icons/pause.ico"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                            
+                            <Button Style="{StaticResource ModernButton}"
+									Width="40"
+									Height="40"
+									Command="{Binding NextSongCommand}">
+                                <Image Source="Assets/Icons/next.ico" Width="16" Height="16"/>
+                            </Button>
+                            
                         </StackPanel>
                         <StackPanel
 							Grid.Column="2"
 							Orientation="Horizontal"
 							HorizontalAlignment="Right">
-                            <Button
-								Content="🔀"
-								Style="{StaticResource ShuffleToggleButton}"
-								Width="40"
-								Height="40"
-								FontSize="16"
-								ToolTip="Reproducción Aleatoria"
-								Command="{Binding ToggleShuffleCommand}" />
-                            <Button
-								Content="🔁"
-								Style="{StaticResource LoopToggleButton}"
-								Width="40"
-								Height="40"
-								FontSize="16"
-								ToolTip="Repetir Canción"
-								Command="{Binding ToggleLoopCommand}" />
+                            <Button 
+                                Style="{StaticResource ShuffleToggleButton}" 
+                                Width="40"
+                                Height="40" 
+                                Command="{Binding ToogleShuffleCommand}">
+                                <Image Source="Assets/Icons/shuffle.ico" Width="16" Height="16"/>
+                            </Button>
+                            <Button 
+                                Style="{StaticResource LoopToggleButton}"
+                                Width="40"
+                                Height="40"
+                                Command="{Binding ToogleLoopCommand}">
+                                <Image Source="Assets/Icons/loop.ico" Width="16" Height="16"/>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Grid>

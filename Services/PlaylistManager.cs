@@ -74,8 +74,6 @@ namespace StunsCat.Services
             {
                 SelectedPlaylist = Playlists.First();
             }
-
-            System.Diagnostics.Debug.WriteLine($"✅ Creadas {Playlists.Count} playlists con {songList.Count} canciones total");
         }
 
         public void AddSongToPlaylist(string playlistName, Song song)
